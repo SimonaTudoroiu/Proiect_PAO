@@ -38,8 +38,6 @@ Actiunile proiectului:
 
 ☺Categorizarea tranzactiilor: utilizatorul ar trebui sa poata categoriza tranzactiile in functie de tipul acestora, cum ar fi alimente, transport sau distractii 
 
-☺Generarea de rapoarte: Utilizatorul ar trebui sa poata genera rapoarte cu privirea la veniturile, cheltuielile si categoriile de tranzactii pentru a vedea cum isi cheltuie banii si pentru a face planuri pentru viitor 
-
 ☺Administrarea contului de utilizator: utilizatorul ar trebui sa poata administra si actualiza contul sau de utilizator, inclusiv informatiile de autentificare si profilul personal 
 
 ☺Setarea de obiective bugetare: utilizatorul ar trebui sa poata stabili obiective pentru economii iar aplicatia sa poata monitoriza progresul sau si sa alarmeze utilizatorul in cazul in care cheltuie mai multi bani decat si-a propus 
@@ -48,4 +46,6 @@ Actiunile proiectului:
 
 ☺Algerea unuia dintre conturi pentru care sa faca anumite actiuni: utilizatorul ar trebui sa poata alege ce cont bancar vrea sa foloseasca pentru gestiunea bugetului 
 
-☺Generarea unui istoric al platilor facut intr-o anumita luna: utilizatorul ar trebui sa poata genera un istoric al tuturor platilor facute intr-o luna aleasa de el, pentru a-si verifica cheltuielile 
+Logout
+
+Delete account
