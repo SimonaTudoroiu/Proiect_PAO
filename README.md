@@ -14,7 +14,10 @@ Budget -> clasa utilizata pentru a stoca si manipula informatii despre bugetul p
 
 Transaction -> clasa utilizata pentru a stoca informatii despre o tranzactie spacifica, cum ar fi data, suma si descrierea tranzactiei 
 
-Category -> clasa utilizata pentru a organiza tranzactiile in categorii, cum ar fi alimente, transport sau distractii 
+ExpenseTransaction
+
+IncomeTransaction
+
 
 User -> clasa utilizata pentru a stoca informatii despre utilizatorul aplicatiei, cum ar fi numele, adresa de e-mail, parola 
 
