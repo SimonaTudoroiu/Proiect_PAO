@@ -70,6 +70,21 @@ abstract class Transaction {
         return category;
     }
 
+    public String getCategoryName() {
+        if (category.equals("food"))
+            return "food";
+        else if (category.equals("transport"))
+            return "transport";
+        else if (category.equals("bills"))
+            return "bills";
+        else if (category.equals("entertainment"))
+            return "entertainment";
+        else if (category.equals("salary"))
+            return "salary";
+        else
+            return "other";
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -82,5 +97,12 @@ abstract class Transaction {
 //        return this.account.getTransactionById(id);
 //    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIBAN() {
+        return account.getIBAN();
+    }
     public abstract void updateBalance(double amount);
 }

@@ -177,4 +177,8 @@ public class BankAccount {
         }
         return expenseTransactionsByMonth;
     }
+
+    public String getUsername() {
+        return this.user.getName();
+    }
 }

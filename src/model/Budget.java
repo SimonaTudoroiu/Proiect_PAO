@@ -5,12 +5,14 @@ public class Budget {
     private double income;
     private double expense;
     private double savings;
+    private String username;
 
-    public Budget(double balance, double income, double expense) {
+    public Budget(double balance, double income, double expense, String username) {
         this.balance = balance;
         this.income = income;
         this.expense = expense;
         this.savings = 0;
+        this.username = username;
     }
 
     @Override
@@ -86,6 +88,10 @@ public class Budget {
 
     public void updateBalance(double amount) {
         this.balance = this.balance + amount;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 

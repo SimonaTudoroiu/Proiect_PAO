@@ -36,7 +36,7 @@ public class Service {
             expense += bankAccount.getExpense();
         }
 
-        budgets.put(user, new Budget(balance, income, expense));
+        budgets.put(user, new Budget(balance, income, expense, user.getName()));
 
         listOfUsers.add(user);
     }
