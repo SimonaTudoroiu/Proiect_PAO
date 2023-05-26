@@ -21,10 +21,10 @@ public class ServiceDB {
         DbFunctions db = new DbFunctions();
         Connection conn = db.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
 
-        userRepository = new UserRepository(db);
-        transactionRepository = new TransactionRepository(db);
-        budgetRepository = new BudgetRepository(db);
-        bankAccountRepository = new BankAccountRepository(db);
+        this.userRepository = new UserRepository(db);
+        this.transactionRepository = new TransactionRepository(db);
+        this.budgetRepository = new BudgetRepository(db);
+        this.bankAccountRepository = new BankAccountRepository(db);
     }
 
     public User login(String username, String password) {
@@ -43,13 +43,11 @@ public class ServiceDB {
         userRepository.deleteUser(name);
     }
 
-    public void addIncomeTransaction(IncomeTransaction incomeTransaction) {
-        transactionRepository.insertIncomeTransaction(incomeTransaction);
+    public void addTransaction(Date date, String description, double amount, String IBAN, String category, String username, String type) {
+        transactionRepository.insertTransaction((java.sql.Date) date, description, amount, IBAN, category, username, type);
     }
 
-    public void addExpenseTransaction(ExpenseTransaction expenseTransaction) {
-        transactionRepository.insertExpenseTransaction(expenseTransaction);
-    }
+
 
     public void printTransactionByDate(Date date) {
         ArrayList<String> transaction = transactionRepository.getTransactionByDate((java.sql.Date) date);
@@ -57,8 +55,8 @@ public class ServiceDB {
         System.out.println("Date: " + transaction.get(0) + "\nDescription: " + transaction.get(1) + "\nAmount: " + transaction.get(2) + "\nIBAN: " + transaction.get(3) + "\nCategory: " + transaction.get(4));
     }
 
-    public void updateTransaction(Date date, String description, double amount, String IBAN, String category) {
-        transactionRepository.updateTransaction((java.sql.Date) date, description, amount, IBAN, category);
+    public void updateTransaction(Date date, String description, double amount, String IBAN, String category, String username, String type) {
+        transactionRepository.updateTransaction((java.sql.Date) date, description, amount, IBAN, category,username,  type);
     }
 
     public void deleteTransaction(Date date) {

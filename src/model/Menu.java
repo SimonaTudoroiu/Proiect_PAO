@@ -2,7 +2,9 @@ package model;
 
 import service.Service;
 import service.ServiceDB;
+import utile.Audit;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -12,7 +14,27 @@ public class Menu {
 
     private ServiceDB serviceDB;
     private Validator validator;
+    private Audit audit = new Audit();
 
+    private static Map<Integer, String> comenzi = new HashMap<Integer, String>(){
+        {
+            put(1," See details of your account");
+            put(2," See details of your bank account");
+            put(3," See details of your budget\n");
+            put(4," See details of your transactions from today\n");
+            put(5," Update budget\n");
+            put(6," Update bank account\n");
+            put(7," Add a new bank account\n");
+            put(8," Remove bank account\n");
+            put(9," Update your user profile\n");
+            put(10," Delete your account\n");
+            put(11," Delete all the transactions for today\n");
+            put(12," Delete your budget\n");
+            put(13," Add a transaction\n");
+            put(14," Logout\n");
+
+        }
+    };
     private Menu() {
         service = new Service();
         validator = new Validator();
@@ -162,8 +184,10 @@ public class Menu {
         System.out.println("Please enter the current balance of the account:\n");
         double balance = scanner.nextDouble();
         BankAccount bankAccount = new BankAccount(user, IBAN, name, currency, balance);
+        Budget budget = new Budget(0, 0, 0, user.getName());
 
         serviceDB.addBankAccount(bankAccount);
+        serviceDB.addBudget(budget);
 
         System.out.println("You have registered successfully! Now you have to login!\n");
     }
@@ -189,8 +213,7 @@ public class Menu {
         return option;
     }
 
-    public int secondMenuDB()
-    {
+    public int secondMenuDB() throws IOException {
         System.out.println("Welcome to the Budget App!\n");
         System.out.println("Please select an option:\n");
         System.out.println("1. See details of your account\n");
@@ -207,9 +230,13 @@ public class Menu {
         System.out.println("10. Delete your account\n");
         System.out.println("11. Delete all the transactions for today\n");
         System.out.println("12. Delete your budget\n");
-        System.out.println("13. Logout\n");
+        System.out.println("13. Add a transaction\n");
+        System.out.println("14. Logout\n");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
+
+        String comanda = comenzi.get(option);
+        audit.logAction(comanda);
         return option;
     }
 
@@ -480,7 +507,7 @@ public class Menu {
                                             else
                                                 continue alDoileaMeniu;
                                         case 3:
-                                            serviceDB.getBudgetByDUsername(user.getName());
+                                            System.out.println(serviceDB.getBudgetByDUsername(user.getName()).toString());
 
                                             System.out.println("Do you want to go back to the main menu? (y/n)");
                                             scanner = new Scanner(System.in);
@@ -660,6 +687,30 @@ public class Menu {
                                                 continue alDoileaMeniu;
 
                                         case 13:
+                                            System.out.println("Please enter the type of the transaction (income, expense):\n");
+                                            scanner = new Scanner(System.in);
+                                            String type = scanner.next();
+                                            System.out.println("Please enter the description of the transaction:\n");
+                                            String description = scanner.next();
+                                            System.out.println("Please enter the amount of the transaction:\n");
+                                            double amount = scanner.nextDouble();
+                                            System.out.println("Please enter the IBAN of the transaction:\n");
+                                            IBAN = scanner.next();
+                                            validator.isIBAN(IBAN);
+                                            System.out.println("Please enter the category of the transaction:\n");
+                                            String category = scanner.next();
+
+                                            date = java.sql.Date.valueOf(LocalDate.now());
+                                            serviceDB.addTransaction(date, description, amount, IBAN, category,user.getName(), type);
+
+                                            System.out.println("Do you want to go back to the main menu? (y/n)");
+                                            scanner = new Scanner(System.in);
+                                            option = scanner.next();
+                                            if(option.equals("y"))
+                                                continue meniuPrincipal;
+                                            else
+                                                continue alDoileaMeniu;
+                                        case 14:
                                             continue meniuPrincipal;
                                     }
                                 }

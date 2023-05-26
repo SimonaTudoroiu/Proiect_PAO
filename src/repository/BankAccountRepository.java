@@ -13,17 +13,17 @@ public class BankAccountRepository {
         this.dbFunctions = dbFunctions;
     }
 
-    public void insertBankAccount(BankAccount budget){
-        String preparedSql = "INSERT INTO bankAccount (username, IBAN, name, currency, balance) VALUES (?, ?, ?, ?, ?)";
+    public void insertBankAccount(BankAccount bankAccount){
+        String preparedSql = "INSERT INTO \"bankAccount\" (username, \"IBAN\", name, currency, balance) VALUES (?, ?, ?, ?, ?)";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
 
         try{
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(preparedSql);
-            preparedStatement.setString(1, budget.getUsername());
-            preparedStatement.setString(2, budget.getIBAN());
-            preparedStatement.setString(3, budget.getName());
-            preparedStatement.setString(4, budget.getCurrency());
-            preparedStatement.setDouble(5, budget.getBalance());
+            preparedStatement.setString(1, bankAccount.getUsername());
+            preparedStatement.setString(2, bankAccount.getIBAN());
+            preparedStatement.setString(3, bankAccount.getName());
+            preparedStatement.setString(4, bankAccount.getCurrency());
+            preparedStatement.setDouble(5, bankAccount.getBalance());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -33,18 +33,20 @@ public class BankAccountRepository {
 
     public ArrayList<String> getBankAccountByUsername(String username)
     {
-        String selectSql = "SELECT * FROM bankAccount WHERE username = ?";
+        String selectSql = "SELECT * FROM \"bankAccount\" WHERE username = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(selectSql);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<String> bankAccount = new ArrayList<>();
-            bankAccount.add(resultSet.getString("username"));
-            bankAccount.add(resultSet.getString("IBAN"));
-            bankAccount.add(resultSet.getString("name"));
-            bankAccount.add(resultSet.getString("currency"));
-            bankAccount.add(resultSet.getString("balance"));
+            if(resultSet.next()) {
+                bankAccount.add(resultSet.getString("username"));
+                bankAccount.add(resultSet.getString("IBAN"));
+                bankAccount.add(resultSet.getString("name"));
+                bankAccount.add(resultSet.getString("currency"));
+                bankAccount.add(resultSet.getString("balance"));
+            }
             return bankAccount;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -56,7 +58,7 @@ public class BankAccountRepository {
 
     public void updateBankAccount(String username, String IBAN, String name, String currency, Double balance)
     {
-        String updateSql = "UPDATE bankAccount SET IBAN = ?, name = ?, currency = ?, balance = ? WHERE username = ?";
+        String updateSql = "UPDATE \"bankAccount\" SET \"IBAN\" = ?, name = ?, currency = ?, balance = ? WHERE username = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(updateSql);
@@ -77,7 +79,7 @@ public class BankAccountRepository {
 
     public void deleteBankAccount(String username)
     {
-        String deleteSql = "DELETE FROM bankAccount WHERE username = ?";
+        String deleteSql = "DELETE FROM \"bankAccount\" WHERE username = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(deleteSql);

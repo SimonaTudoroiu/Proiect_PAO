@@ -11,19 +11,21 @@ public class TransactionRepository {
     private DbFunctions dbFunctions;
 
     public TransactionRepository(DbFunctions dbFunctions) {
-        dbFunctions = new DbFunctions();
+        this.dbFunctions = new DbFunctions();
     }
-    public void insertIncomeTransaction( IncomeTransaction transaction){
-        String preparedSql = "INSERT INTO transaction (date, description, amount, IBAN, category) VALUES (?, ?, ?, ?, ?)";
+    public void insertTransaction(Date date, String description, double amount, String IBAN, String category, String username, String type){
+        String preparedSql = "INSERT INTO \"transaction\" (date, description, amount, \"IBAN\", category, username,  type) VALUES (?, ?, ?, ?, ?, ?, ?)";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
 
         try{
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(preparedSql);
-            preparedStatement.setDate(1, (Date) transaction.getDate());
-            preparedStatement.setString(2, transaction.getDescription());
-            preparedStatement.setDouble(3, transaction.getAmount());
-            preparedStatement.setString(4, transaction.getIBAN());
-            preparedStatement.setString(5, transaction.getCategoryName());
+            preparedStatement.setDate(1, (Date)date);
+            preparedStatement.setString(2, description);
+            preparedStatement.setDouble(3, amount);
+            preparedStatement.setString(4, IBAN);
+            preparedStatement.setString(5, category);
+            preparedStatement.setString(6, username);
+            preparedStatement.setString(7, type);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -31,27 +33,10 @@ public class TransactionRepository {
         }
     }
 
-    public void insertExpenseTransaction( ExpenseTransaction transaction){
-        String preparedSql = "INSERT INTO transaction (date, description, amount, IBAN, category) VALUES (?, ?, ?, ?, ?)";
-        Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
-
-        try{
-            PreparedStatement preparedStatement = databaseConnection.prepareStatement(preparedSql);
-            preparedStatement.setDate(1, (Date) transaction.getDate());
-            preparedStatement.setString(2, transaction.getDescription());
-            preparedStatement.setDouble(3, transaction.getAmount());
-            preparedStatement.setString(4, transaction.getIBAN());
-            preparedStatement.setString(5, transaction.getCategoryName());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public ArrayList<String> getTransactionByDate(Date date)
     {
-        String selectSql = "SELECT * FROM transaction WHERE date = ?";
+        String selectSql = "SELECT * FROM \"transaction\" WHERE date = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(selectSql);
@@ -63,6 +48,9 @@ public class TransactionRepository {
             transaction.add(resultSet.getString("amount"));
             transaction.add(resultSet.getString("IBAN"));
             transaction.add(resultSet.getString("category"));
+            transaction.add(resultSet.getString("username"));
+            transaction.add(resultSet.getString("type"));
+
             return transaction;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -71,9 +59,9 @@ public class TransactionRepository {
     }
 
 
-    public void updateTransaction(Date date, String description, double amount, String IBAN, String category)
+    public void updateTransaction(Date date, String description, double amount, String IBAN, String category, String username, String type)
     {
-        String updateSql = "UPDATE transaction SET description = ?, amount = ?, IBAN = ?, category = ? WHERE date = ?";
+        String updateSql = "UPDATE \"transaction\" SET description = ?, amount = ?, \"IBAN\" = ?, category = ?, username = ?, type = ? WHERE date = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(updateSql);
@@ -82,6 +70,8 @@ public class TransactionRepository {
             preparedStatement.setDouble(3, amount);
             preparedStatement.setString(4, IBAN);
             preparedStatement.setString(5, category);
+            preparedStatement.setString(6, username);
+            preparedStatement.setString(7, type);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -91,7 +81,7 @@ public class TransactionRepository {
 
     public void deleteTransaction(Date date)
     {
-        String deleteSql = "DELETE FROM transaction WHERE name = ?";
+        String deleteSql = "DELETE FROM \"transaction\" WHERE name = ?";
         Connection databaseConnection = dbFunctions.connect_to_db("proiect_PAO", "postgres", "Reauugel02");
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(deleteSql);

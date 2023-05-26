@@ -40,7 +40,7 @@ public class UserRepository {
         try {
             PreparedStatement preparedStatement = databaseConnection.prepareStatement(selectSql);
             preparedStatement.setString(1, nume);
-            preparedStatement.setString(3, password);
+            preparedStatement.setString(2, password);
             return mapToUser(preparedStatement.executeQuery());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
